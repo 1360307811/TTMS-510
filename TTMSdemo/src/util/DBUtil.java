@@ -8,14 +8,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DBUtil {
-	private final String URL = "jdbc:mysql://localhost/ttms";
-	private final String USERNAME = "root";
-	private final String PASSWORD = "root";
+	private final String URL = "jdbc:sqlserver://127.0.0.1:1433;Databasename=TTMS";
+	private final String USERNAME = "sa";
+	private final String PASSWORD = "123456";
 
 	private Connection createConn() {
 		Connection conn = null;
 		try {
-			Class.forName("com.mysql.jdbc.Driver"); //classLoader,加载对应驱动
+			
+			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver"); //classLoader,加载对应驱动
 			conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -37,18 +38,35 @@ public class DBUtil {
 	}
 
 	// 插入一条新纪录，并获取标识列的值
-	public ResultSet getInsertObjectIDs(String insertSql) {
-		ResultSet rst = null;
+	public int getInsertObjectIDs(String insertSql) {
+		int rst = 0;
 		try {
 			Connection conn = createConn();
 			Statement stmt = conn.createStatement();
-			stmt.executeUpdate(insertSql, Statement.RETURN_GENERATED_KEYS);
-			rst = stmt.getGeneratedKeys();
+			rst = stmt.executeUpdate(insertSql, Statement.RETURN_GENERATED_KEYS);
+			//rst = stmt.getGeneratedKeys();
+			if(rst > 1) {
+				rst = 1;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return rst;
 	}
+	//查询
+	/*public ResultSet select(String sql) {
+		ResultSet rs = null;
+		try {
+			Connection conn = createConn();
+			Statement stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			stmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}*/
 
 	// 插入、更新、删除
 	public int execCommand(String sql) {

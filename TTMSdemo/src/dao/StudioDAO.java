@@ -22,9 +22,15 @@ public class StudioDAO implements IStudioDAO {
 					+ ", '" + stu.getIntroduction()
 					+ "' )";
 			DBUtil db = new DBUtil();
-			ResultSet rst = db.getInsertObjectIDs(sql);
-			if (rst!=null && rst.first()) {
-				stu.setID(rst.getInt(1));
+			int  rst = db.getInsertObjectIDs(sql);
+			if (rst == 1 ) {
+				
+				ResultSet rs = db.execQuery(sql);
+				while(rs.next()) {
+					int n = rs.getInt("studio_ID");
+					stu.setID(n);			
+				}
+				System.out.println(stu.getID());
 				return 1;
 			}
 		} catch (SQLException e) {

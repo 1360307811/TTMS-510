@@ -1,0 +1,168 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>wcss</title>
+<body>
+
+<div class="mr-top">
+<h1>注册界面</h1>
+</div>
+
+<div class="mr-wording">
+<form method="post" id="myform">
+<input type="hidden" id="type" value="add" name="method">
+
+<p class="mr-word">
+<input type="radio" value="0" name="choice">
+<label for="user">用户</label>
+<input type="radio" value="1" name="choice">
+<label for="emplyoee">员工</label>
+</p>
+
+
+<p class="mr-word">请输入您的用户名</p>
+<input type="user" name="username" id="username" maxlength="11" placeholder="用户名小于11位数">
+
+<p class="mr-word">请输入您的账号</p>
+<input type="account" name="account" id="account" maxlength="11" placeholder="请输入11位数字"></p>
+
+<p class="mr-word">请输入密码</p>
+<input type="password1" name="" id="password1" placeholder="密码数应大于6位"></p>
+
+<p class="mr-word">请确认密码</p>
+<input type="password2" name="password" id="password2"  placeholder="确认魔法"></p>
+
+<p class="creat">
+<button type="button" onclick="verify()">注册</button></p>
+</form>
+</div>
+
+</body>
+
+
+<style>
+.mr-top{
+	width:100%;
+	height: 100px;
+	color: #3CF;
+	background-color: #D8D8D8;
+	border: 1px solid #0FF;
+	text-align: center;
+}
+
+.mr-wording{
+	border: 1px solid #0FF;
+	text-align: center;
+	width: 75%;
+	height: auto;
+	background-color: #D8D8D8;
+	position: absolute;
+	top:145px;
+	left: 12.5%;
+}
+
+.mr-word{
+	font-size:24px;
+}
+</style>
+
+<script type="text/javascript">
+function verify(){
+    var form=document.getElementById("myform");
+	var username=document.getElementById("username");
+	var account=document.getElementById("account");
+	var password1=document.getElementById("password1");
+	var password2=document.getElementById("password2");
+	var type=document.getElementById("type");
+
+	if(username.value==""||username.value===null){
+		alert("用户名不能为空");
+		return;
+	}
+	
+	if(account.value==""||account.value===null){
+		alert("账号不能为空");
+		return;
+	}
+	
+	if(account.value.length < 11){
+		alert("账号应为11位数");
+		return;
+	}
+	if(isNaN(account.value)){
+		alert("账号请输入数字");
+		return;
+	}
+
+    if(password1.value==""||password1.value===null){
+		alert("密码不能为空");
+		return;
+	}
+	if(password1.value.length < 6){
+		alert("密码数应大于6位")
+	}
+	if(password1.value!=password2.value){
+		alert("前后密码不一致");
+		return;
+	}
+   
+	var item =null;
+    var obj=document.getElementsByName("choice");
+    for(var i=0;i<obj.length;i++){
+    	if(obj[i].checked){
+    		item=obj[i].value;
+    		if(item==0){
+    	    var url = "UserUpdate";
+    		req = new XMLHttpRequest();
+    		if (req) {
+    			//采用POST方式，异步传输
+    			req.open("post", url, true);
+    			//POST方式，必须加入如下头信息设定
+    			req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    			 window.alert("注册成功！");
+    			req.onreadystatechange = checkComplete;
+    			
+    			var data = "type=" + type.value + "&username=" + username.value + "&account=" + account.value + "&password=" + password2.value;
+    			req.send(data);
+    			}
+    	}	
+    	else if(item==1){
+    	    var url = "EmplyoeeUpdate";
+    		req = new XMLHttpRequest();
+    		if (req) {
+    			//采用POST方式，异步传输
+    			req.open("post", url, true);
+    			//POST方式，必须加入如下头信息设定
+    			req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    			 window.alert("注册成功！");
+    			req.onreadystatechange = checkComplete;
+    			
+    			var data = "type=" + type.value + "&username=" + username.value + "&account=" + account.value + "&password=" + password2.value;
+    			req.send(data);
+    			}
+    	}
+}
+	
+}	
+				
+			
+}
+
+
+
+
+	function checkComplete() {
+		if (req.readyState == 4 && req.status == 200) {
+			alert(req0.responseText);
+		}
+	}
+	
+	
+	
+	
+	
+	
+</script>
+
+</html>
